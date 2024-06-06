@@ -1,3 +1,5 @@
+package SnakeGame;
+
 public class Point {
     int x, y;
 
