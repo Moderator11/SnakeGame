@@ -1,5 +1,3 @@
-package SnakeGame;
-
 import javax.swing.JFrame;
 
 public class SnakeGameLauncher {

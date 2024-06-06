@@ -1,6 +1,7 @@
-package SnakeGame;
 
 import javax.swing.*;
+
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -22,11 +23,40 @@ public class SnakeGame extends JFrame {
     Point food;
     inputHandler ih;
     SnakeGameScreen screen;
+    JLabel textLabel;
 
     public SnakeGame() {
         super("SnakeGame");
-        InitializeGame();
-        GameStart();
+        startScreen();
+    }
+    
+    void startScreen() {
+        JPanel start = new JPanel();
+        start.setLayout(new BorderLayout());
+        
+        JButton startButton = new JButton("Start");
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	InitializeGame();
+                GameStart();
+                remove(start);
+                revalidate();
+                toFront();
+                requestFocus();
+            }
+        });
+
+        startButton.setSize(50, 20);
+        start.add(startButton, BorderLayout.CENTER);
+        
+        String titleText = "!!! Snake Game !!!";
+        textLabel = new JLabel(titleText, SwingConstants.CENTER);
+        start.add(textLabel, BorderLayout.NORTH);
+        
+        add(start);
+        setSize(517, 540);
+        setVisible(true);
     }
 
     void InitializeGame() {
@@ -40,6 +70,7 @@ public class SnakeGame extends JFrame {
         });
 
         ih = new inputHandler();
+        System.out.println("key 이벤트 발생");
         screen = new SnakeGameScreen(boardSize, 50);
         add(screen);
         addKeyListener(ih);
