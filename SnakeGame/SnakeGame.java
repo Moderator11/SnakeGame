@@ -107,16 +107,16 @@ public class SnakeGame extends JFrame {
                 case 32:
                     if (screen.gameOver == true) GameStart();
                 case 38:
-                    snakeDirection = UP;
+                    if(snakeDirection != DOWN) snakeDirection = UP;
                     break;
                 case 40:
-                    snakeDirection = DOWN;
+                    if(snakeDirection != UP) snakeDirection = DOWN;
                     break;
                 case 39:
-                    snakeDirection = RIGHT;
+                    if(snakeDirection != LEFT) snakeDirection = RIGHT;
                     break;
                 case 37:
-                    snakeDirection = LEFT;
+                    if(snakeDirection != RIGHT) snakeDirection = LEFT;
                     break;
                 /*case KeyEvent.VK_SHIFT:
                     frameRefresher.setDelay(50);
