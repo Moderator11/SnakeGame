@@ -1,6 +1,7 @@
 package SnakeGame;
 
 import javax.swing.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -30,7 +31,7 @@ public class SnakeGame extends JFrame {
     }
 
     void InitializeGame() {
-        boardSize = new Point(10, 10);
+        boardSize = new Point(25, 25);
         frameRefresher = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -40,7 +41,7 @@ public class SnakeGame extends JFrame {
         });
 
         ih = new inputHandler();
-        screen = new SnakeGameScreen(boardSize, 50);
+        screen = new SnakeGameScreen(boardSize, 20);
         add(screen);
         addKeyListener(ih);
         setSize(517, 540);
@@ -82,6 +83,8 @@ public class SnakeGame extends JFrame {
 
     void SnakeMovement() {
         Point newHead = Point.addClamp(snake.getFirst(), snakeDirection, boardSize.x, boardSize.y);
+      //  if (newHead.x == boardSize.x && newHead.y == boardSize.y)
+      //  	GameStop();
         for (Point p : snake) {
             if (p.x == newHead.x && p.y == newHead.y) {
                 GameStop();
