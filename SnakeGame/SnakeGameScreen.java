@@ -32,7 +32,7 @@ public class SnakeGameScreen extends JPanel {
 
     private void RenderGameOverScreen(Graphics g)
     {
-        g.setColor(Color.BLUE);
+        g.setColor(Color.WHITE);
         g.setFont(new Font(g.getFont().getFontName(), Font.PLAIN, 20));
         g.drawString("GameOver...Press Space bar to restart", 60, getHeight() / 2);
         g.drawString(String.format("Your score : %d", snake.size()), 60, getHeight() / 2 + 30);
@@ -40,7 +40,7 @@ public class SnakeGameScreen extends JPanel {
 
     private void RenderGameScreen(Graphics g)
     {
-        g.setColor(Color.WHITE);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, getWidth(), getHeight());
 
         /*g.setColor(Color.BLACK);
