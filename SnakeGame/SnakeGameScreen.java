@@ -1,10 +1,14 @@
 package SnakeGame;
 
 import javax.swing.*;
-
 import java.awt.*;
+import java.lang.reflect.Array;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class SnakeGameScreen extends JPanel {
     public LinkedList<Point> snake;
@@ -12,6 +16,9 @@ public class SnakeGameScreen extends JPanel {
     private Point boardSize;
     private int size;
     public boolean gameOver = false;
+    static int iteration = 0;
+    private Timer colorTransitionTimer;
+
 
     public SnakeGameScreen(Point boardSize, int size) {
         this.boardSize = boardSize;
@@ -49,10 +56,12 @@ public class SnakeGameScreen extends JPanel {
             }
         }*/
 
+        Color[] rainbowColors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(148, 0, 211),Color.PINK};
+
         Random r = new Random();
         g.setColor(Color.RED);
         for (int i = 0; i < snake.size(); i++) {
-            g.setColor(new Color(Math.clamp(255 - i * 25, 0, 255), Math.clamp(i * 25, 0, 255), Math.clamp(i * 10, 0, 255)));
+            g.setColor(rainbowColors[(i + iteration) % rainbowColors.length]);
             g.fillRect(snake.get(i).x * size, snake.get(i).y * size, size, size);
         }
 
@@ -61,4 +70,5 @@ public class SnakeGameScreen extends JPanel {
             g.fillRect(food.x * size, food.y * size, size, size);
         }
     }
+
 }
