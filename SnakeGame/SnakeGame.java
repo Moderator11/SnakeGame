@@ -1,7 +1,6 @@
 package SnakeGame;
 
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -31,17 +30,18 @@ public class SnakeGame extends JFrame {
     }
 
     void InitializeGame() {
-        boardSize = new Point(20, 20);
-        frameRefresher = new Timer(90, new ActionListener() {
+        boardSize = new Point(10, 10);
+        frameRefresher = new Timer(100, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SnakeMovement();
+                SnakeGameScreen.iteration++;
                 screen.repaint();
             }
         });
 
         ih = new inputHandler();
-        screen = new SnakeGameScreen(boardSize, 25);
+        screen = new SnakeGameScreen(boardSize, 50);
         add(screen);
         addKeyListener(ih);
         setSize(517, 540);
@@ -62,14 +62,14 @@ public class SnakeGame extends JFrame {
     }
 
     void GameStart() {
-        frameRefresher.setDelay(90);
+        frameRefresher.setDelay(100);
         screen.gameOver = false;
 
         frameRefresher.start();
         foodSpawner.start();
 
         snake = new LinkedList<Point>();
-        snake.add(new Point(10, 10));
+        snake.add(new Point(5, 5));
         screen.snake = snake;
         snakeDirection = UP;
     }
@@ -83,8 +83,6 @@ public class SnakeGame extends JFrame {
 
     void SnakeMovement() {
         Point newHead = Point.addClamp(snake.getFirst(), snakeDirection, boardSize.x, boardSize.y);
-        if (newHead.x < 0 || newHead.x >= boardSize.x || newHead.y < 0 || newHead.y >= boardSize.y)
-	        GameStop();
         for (Point p : snake) {
             if (p.x == newHead.x && p.y == newHead.y) {
                 GameStop();
@@ -92,7 +90,7 @@ public class SnakeGame extends JFrame {
         }
         snake.addFirst(newHead);
         if (newHead.x == food.x && newHead.y == food.y) {
-            frameRefresher.setDelay(frameRefresher.getDelay() - 3);
+            frameRefresher.setDelay(frameRefresher.getDelay() - 5);
             food.x = -1;
             food.y = -1;
         } else {
@@ -107,16 +105,16 @@ public class SnakeGame extends JFrame {
                 case 32:
                     if (screen.gameOver == true) GameStart();
                 case 38:
-                    if(snakeDirection != DOWN) snakeDirection = UP;
+                    snakeDirection = UP;
                     break;
                 case 40:
-                    if(snakeDirection != UP) snakeDirection = DOWN;
+                    snakeDirection = DOWN;
                     break;
                 case 39:
-                    if(snakeDirection != LEFT) snakeDirection = RIGHT;
+                    snakeDirection = RIGHT;
                     break;
                 case 37:
-                    if(snakeDirection != RIGHT) snakeDirection = LEFT;
+                    snakeDirection = LEFT;
                     break;
                 /*case KeyEvent.VK_SHIFT:
                     frameRefresher.setDelay(50);
