@@ -12,6 +12,7 @@ public class SnakeGameScreen extends JPanel {
     private Point boardSize;
     private int size;
     public boolean gameOver = false;
+    static int iteration = 0;
 
     public SnakeGameScreen(Point boardSize, int size) {
         this.boardSize = boardSize;
@@ -49,10 +50,12 @@ public class SnakeGameScreen extends JPanel {
             }
         }*/
 
+        Color[] rainbowColors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(148, 0, 211) , Color.PINK };
+
         Random r = new Random();
         g.setColor(Color.RED);
         for (int i = 0; i < snake.size(); i++) {
-            g.setColor(new Color(Math.clamp(255 - i * 25, 0, 255), Math.clamp(i * 25, 0, 255), Math.clamp(i * 10, 0, 255)));
+            g.setColor(rainbowColors[(i + iteration) % rainbowColors.length]);
             g.fillRect(snake.get(i).x * size, snake.get(i).y * size, size, size);
         }
 

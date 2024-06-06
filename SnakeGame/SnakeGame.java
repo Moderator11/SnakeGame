@@ -67,6 +67,7 @@ public class SnakeGame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 SnakeMovement();
+                SnakeGameScreen.iteration++;
                 screen.repaint();
             }
         });
