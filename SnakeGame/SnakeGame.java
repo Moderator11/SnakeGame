@@ -2,8 +2,9 @@ package SnakeGame;
 
 import javax.swing.*;
 
-
-import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -27,38 +28,100 @@ public class SnakeGame extends JFrame {
     SnakeGameScreen screen;
     JLabel textLabel;
 
+    Timer actionTimer;
+    static int iteration = 0;
+
     public SnakeGame() {
         super("SnakeGame");
         startScreen();
     }
-    
+
     void startScreen() {
-        JPanel start = new JPanel();
-        start.setLayout(new BorderLayout());
-        
+        AnimationSnake start = new AnimationSnake();
+        start.setLayout(null);
+        start.setBackground(Color.BLACK);
+
+        String titleText = "!!! Snake Game !!!";
+        textLabel = new JLabel(titleText, SwingConstants.CENTER);
+        textLabel.setFont(new Font(textLabel.getFont().getFontName(), Font.PLAIN, 40));
+        textLabel.setForeground(Color.WHITE);
+        textLabel.setBounds(50, 150, 400, 40);
+        start.add(textLabel);
+
         JButton startButton = new JButton("Start");
         startButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-            	InitializeGame();
+                actionTimer.stop();
+                remove(start);
+                InitializeGame();
                 GameStart();
                 remove(start);
                 revalidate();
                 toFront();
                 requestFocus();
             }
+
         });
 
-        startButton.setSize(50, 20);
-        start.add(startButton, BorderLayout.CENTER);
-        
-        String titleText = "!!! Snake Game !!!";
-        textLabel = new JLabel(titleText, SwingConstants.CENTER);
-        start.add(textLabel, BorderLayout.NORTH);
-        
+        startButton.setBounds(173, 280, 170, 40);
+        startButton.setBackground(Color.WHITE);
+        startButton.setForeground(Color.BLACK);
+        start.add(startButton);
+
         add(start);
         setSize(517, 540);
         setVisible(true);
+    }
+
+    class AnimationSnake extends JPanel {
+        LinkedList<Point> squares = new LinkedList<>();
+        int squareSize = 20;
+        int xPoint = 20;
+        int yPoint = 20;
+        int i = 0;
+        Color[] rainbowColors
+                = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.BLUE, new Color(148, 0, 211) , Color.PINK };
+
+        public AnimationSnake() {
+            actionTimer = new Timer(100, new ActionListener() {
+
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if (squares.size() < 19) {
+                        squares.add(new Point(xPoint, yPoint));
+                    } else {
+                        squares.add(new Point(xPoint, yPoint));
+                        squares.remove(0);
+                    }
+
+                    if (yPoint == 20 && xPoint < 460)
+                        xPoint += squareSize;
+                    else if (xPoint == 460 && yPoint < 460)
+                        yPoint += squareSize;
+                    else if (yPoint == 460 && xPoint > 20)
+                        xPoint -= squareSize;
+                    else if (xPoint == 20 && yPoint > 20)
+                        yPoint -= squareSize;
+
+                    repaint();
+
+                }
+            });
+            actionTimer.start();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            for (Point square : squares) {
+                g.setColor(rainbowColors[(i + iteration) % rainbowColors.length]);
+                i++;
+                g.drawRect(square.x, square.y, squareSize, squareSize);
+                g.fillRect(square.x, square.y, squareSize, squareSize);
+            }
+        }
     }
 
     void InitializeGame() {
@@ -75,6 +138,7 @@ public class SnakeGame extends JFrame {
         ih = new inputHandler();
         screen = new SnakeGameScreen(boardSize, 25);
         add(screen);
+
         addKeyListener(ih);
         setSize(517, 540);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -116,7 +180,7 @@ public class SnakeGame extends JFrame {
     void SnakeMovement() {
         Point newHead = Point.addClamp(snake.getFirst(), snakeDirection, boardSize.x, boardSize.y);
         if (newHead.x < 0 || newHead.x >= boardSize.x || newHead.y < 0 || newHead.y >= boardSize.y)
-	        GameStop();
+            GameStop();
         for (Point p : snake) {
             if (p.x == newHead.x && p.y == newHead.y) {
                 GameStop();
@@ -157,7 +221,7 @@ public class SnakeGame extends JFrame {
                     System.out.println(e.getKeyCode());*/
             }
         }
-
+	//Sprinting
         /*@Override
         public void keyReleased(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_SHIFT)
