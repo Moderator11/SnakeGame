@@ -27,7 +27,6 @@ public class SnakeGame extends JFrame {
     inputHandler ih;
     SnakeGameScreen screen;
     JLabel textLabel;
-    JLabel endLabel;
     
     Timer actionTimer;
     static int iteration = 0;
